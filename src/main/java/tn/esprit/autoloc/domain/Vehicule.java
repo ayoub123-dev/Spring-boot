@@ -44,16 +44,10 @@ public class Vehicule {
     @Column(nullable = false, length = 20)
     private StatutVehicule statut;
 
-    // * Vehicule -> 1 Agence
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_agence")
     private Agence agence;
 
-    // 1 Vehicule -> * Maintenance
-    @OneToMany(mappedBy = "vehicule")
-    private List<Maintenance> maintenances = new ArrayList<>();
-
-    // * Vehicule <-> * Equipement (table de jointure vehicule_equipement)
     @ManyToMany
     @JoinTable(
             name = "vehicule_equipement",
@@ -62,7 +56,6 @@ public class Vehicule {
     )
     private Set<Equipement> equipements = new HashSet<>();
 
-    // 1 Vehicule -> * Reservation
     @OneToMany(mappedBy = "vehicule")
     private List<Reservation> reservations = new ArrayList<>();
 }

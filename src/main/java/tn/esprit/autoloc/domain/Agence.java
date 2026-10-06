@@ -33,11 +33,9 @@ public class Agence {
     @Column(length = 20)
     private String telephone;
 
-    // 1 Agence -> * Employe
     @OneToMany(mappedBy = "agence")
     private List<Employe> employes = new ArrayList<>();
 
-    // 1 Agence -> * Vehicule
     @OneToMany(mappedBy = "agence")
     private List<Vehicule> vehicules = new ArrayList<>();
 }
