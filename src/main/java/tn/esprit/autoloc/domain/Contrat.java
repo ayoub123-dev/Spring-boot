@@ -1,41 +1,41 @@
 package tn.esprit.autoloc.domain;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "contrat")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Contrat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContrat;
 
-    @Column(nullable = false)
     private LocalDate dateSignature;
-
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal montantTotal;
-
-    @Column(nullable = false)
     private boolean valide;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "id_reservation", nullable = false, unique = true)
+    @OneToOne
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "contrat")
+    @Builder.Default
     private List<Paiement> paiements = new ArrayList<>();
 }

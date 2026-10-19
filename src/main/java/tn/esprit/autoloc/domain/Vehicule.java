@@ -1,61 +1,59 @@
 package tn.esprit.autoloc.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Entity
-@Table(name = "vehicule")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVehicule;
 
-    @Column(nullable = false, unique = true, length = 20)
     private String immatriculation;
-
-    @Column(nullable = false, length = 50)
     private String marque;
-
-    @Column(nullable = false, length = 50)
     private String modele;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private CategorieVehicule categorie;
 
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal tarifJournalier;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private StatutVehicule statut;
 
     @ManyToOne
-    @JoinColumn(name = "id_agence")
     private Agence agence;
 
-    @ManyToMany
-    @JoinTable(
-            name = "vehicule_equipement",
-            joinColumns = @JoinColumn(name = "id_vehicule"),
-            inverseJoinColumns = @JoinColumn(name = "id_equipement")
-    )
-    private Set<Equipement> equipements = new HashSet<>();
+    @OneToMany(mappedBy = "vehicule")
+    @Builder.Default
+    private List<Maintenance> maintenances = new ArrayList<>();
 
     @OneToMany(mappedBy = "vehicule")
+    @Builder.Default
     private List<Reservation> reservations = new ArrayList<>();
+
+    @ManyToMany
+    @Builder.Default
+    private List<Equipement> equipements = new ArrayList<>();
 }
