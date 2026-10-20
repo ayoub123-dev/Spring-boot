@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,5 +35,6 @@ public class Paiement {
     private ModePaiement modePaiement;
 
     @ManyToOne
+    @JsonBackReference("contrat-paiements")
     private Contrat contrat;
 }
